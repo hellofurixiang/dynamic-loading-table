@@ -1,0 +1,540 @@
+// global variables
+var isIE8 = false;
+var isIE9 = false;
+var $windowWidth;
+var $windowHeight;
+var $pageArea;
+// Debounce Function
+(function ($, sr) {
+    // debouncing function from John Hann
+    // http://unscriptable.com/index.php/2009/03/20/debouncing-javascript-methods/
+    var debounce = function (func, threshold, execAsap) {
+        var timeout;
+        return function debounced() {
+            var obj = this,
+                args = arguments;
+
+            function delayed() {
+                if (!execAsap)
+                    func.apply(obj, args);
+                timeout = null;
+            };
+
+            if (timeout)
+                clearTimeout(timeout);
+            else if (execAsap)
+                func.apply(obj, args);
+
+            timeout = setTimeout(delayed, threshold || 100);
+        };
+    };
+    // smartresize
+    jQuery.fn[sr] = function (fn) {
+        return fn ? this.bind('resize', debounce(fn)) : this.trigger(sr);
+    };
+
+})(jQuery, 'clipresize');
+
+//Main Function
+var Main = function () {
+    //function to detect explorer browser and its version
+    var runInit = function () {
+        if (/MSIE (\d+\.\d+);/.test(navigator.userAgent)) {
+            var ieversion = new Number(RegExp.$1);
+            if (ieversion == 8) {
+                isIE8 = true;
+            } else if (ieversion == 9) {
+                isIE9 = true;
+            }
+        }
+    };
+    //function to adjust the template elements based on the window size
+    var runElementsPosition = function () {
+        $windowWidth = $(window).width();
+        $windowHeight = $(window).height();
+        $pageArea = $windowHeight - $('body > .navbar').outerHeight() - $('body > .footer').outerHeight();
+        runContainerHeight();
+    };
+    //function to adapt the Main Content height to the Main Navigation height
+    var runContainerHeight = function () {
+        mainContainer = $('.main-content > .container');
+        mainNavigation = $('.main-navigation');
+        if ($pageArea < 760) {
+            $pageArea = 760;
+        }
+        if (mainContainer.outerHeight() < mainNavigation.outerHeight() && mainNavigation.outerHeight() > $pageArea) {
+            mainContainer.css('min-height', mainNavigation.outerHeight() + 12);
+        } else if(mainNavigation.outerHeight() > $pageArea) {
+            mainContainer.css('min-height', mainNavigation.outerHeight() + 12);
+        }else {
+            mainContainer.css('min-height', $pageArea);
+        }
+        if ($windowWidth < 768) {
+            mainNavigation.css('min-height', $windowHeight - $('body > .navbar').outerHeight());
+        }
+    };
+    //function to activate the ToDo list, if present
+    var runToDoAction = function () {
+        if ($(".todo-actions").length) {
+            $(".todo-actions").click(function () {
+                if ($(this).find("i").hasClass("fa-square-o") || $(this).find("i").hasClass("icon-check-empty")) {
+                    if ($(this).find("i").hasClass("fa")) {
+                        $(this).find("i").removeClass("fa-square-o").addClass("fa-check-square-o");
+                    } else {
+                        $(this).find("i").removeClass("icon-check-empty").addClass("fa fa-check-square-o");
+                    };
+                    $(this).parent().find("span").css({
+                        opacity: .25
+                    });
+                    $(this).parent().find(".desc").css("text-decoration", "line-through");
+                } else {
+                    $(this).find("i").removeClass("fa-check-square-o").addClass("fa-square-o");
+                    $(this).parent().find("span").css({
+                        opacity: 1
+                    });
+                    $(this).parent().find(".desc").css("text-decoration", "none");
+                }
+                return !1;
+            });
+        }
+    };
+    //function to activate the Tooltips, if present
+    var runTooltips = function () {
+        if ($(".tooltips").length) {
+            $('.tooltips').tooltip();
+        }
+    };
+    //function to activate the Popovers, if present
+    var runPopovers = function () {
+        if ($(".popovers").length) {
+            $('.popovers').popover();
+        }
+    };
+    //function to allow a button or a link to open a tab
+    var runShowTab = function () {
+        if ($(".show-tab").length) {
+            $('.show-tab').bind('click', function (e) {
+                e.preventDefault();
+                var tabToShow = $(this).attr("href");
+                if ($(tabToShow).length) {
+                    $('a[href="' + tabToShow + '"]').tab('show');
+                }
+            });
+        };
+        if (getParameterByName('tabId').length) {
+            $('a[href="#' + getParameterByName('tabId') + '"]').tab('show');
+        }
+    };
+    var runPanelScroll = function () {
+        if ($(".panel-scroll").length) {
+            $('.panel-scroll').perfectScrollbar({
+                wheelSpeed: 50,
+                minScrollbarLength: 20,
+                suppressScrollX: true
+            });
+        }
+    };
+    //function to extend the default settings of the Accordion
+    var runAccordionFeatures = function () {
+        if ($('.accordion').length) {
+            $('.accordion .panel-collapse').each(function () {
+                if (!$(this).hasClass('in')) {
+                    $(this).prev('.panel-heading').find('.accordion-toggle').addClass('collapsed');
+                }
+            });
+        }
+        $(".accordion").collapse().height('auto');
+        var lastClicked;
+
+        $('.accordion .accordion-toggle').bind('click', function () {
+            currentTab = $(this);
+            $('html,body').animate({
+                scrollTop: currentTab.offset().top - 100
+            }, 1000);
+        });
+    };
+    //function to reduce the size of the Main Menu
+    var runNavigationToggler = function () {
+        $('.navigation-toggler').bind('click', function () {
+            if (!$('body').hasClass('navigation-small')) {
+                $('body').addClass('navigation-small');
+            } else {
+                $('body').removeClass('navigation-small');
+            };
+        });
+    };
+    //function to activate the panel tools
+    var runModuleTools = function () {
+        $('.panel-tools .panel-expand').bind('click', function (e) {
+            $('.panel-tools a').not(this).hide();
+            $('body').append('<div class="full-white-backdrop"></div>');
+            $('.main-container').removeAttr('style');
+            backdrop = $('.full-white-backdrop');
+            wbox = $(this).parents('.panel');
+            wbox.removeAttr('style');
+            if (wbox.hasClass('panel-full-screen')) {
+                backdrop.fadeIn(200, function () {
+                    $('.panel-tools a').show();
+                    wbox.removeClass('panel-full-screen');
+                    backdrop.fadeOut(200, function () {
+                        backdrop.remove();
+                    });
+                });
+            } else {
+                $('body').append('<div class="full-white-backdrop"></div>');
+                backdrop.fadeIn(200, function () {
+                    $('.main-container').css({
+                        'max-height': $(window).outerHeight() - $('header').outerHeight() - $('.footer').outerHeight() - 100,
+                        'overflow': 'hidden'
+                    });
+                    backdrop.fadeOut(200);
+                    backdrop.remove();
+                    wbox.addClass('panel-full-screen').css({
+                        'max-height': $(window).height(),
+                        'overflow': 'auto'
+                    });
+                });
+            }
+        });
+        $('.panel-tools .panel-close').bind('click', function (e) {
+            $(this).parents(".panel").remove();
+            e.preventDefault();
+        });
+        $('.panel-tools .panel-refresh').bind('click', function (e) {
+            var el = $(this).parents(".panel");
+            el.block({
+                overlayCSS: {
+                    backgroundColor: '#fff',
+                    opacity: '1'
+                },
+                message: '<img src="' + ctp + '/images/loading.gif" /> Loading ......',
+                css: {
+                    border: 'none',
+                    color: '#333',
+                    fontSize : "14px",
+                    background: 'none'
+                }
+            });
+
+            var id = $(this).attr("id");
+            window.setTimeout(function () {
+                if(id == "message-link"){
+                    runLoadMessage(function(){el.unblock();});
+                }else if(id == "task-link"){
+                    runLoadTask(function(){el.unblock();});
+                }else if(id == "bulletin-link"){
+                    runLoadBulletin(function(){el.unblock();});
+                }
+            }, 1000);
+            e.preventDefault();
+        });
+        $('.panel-tools .panel-collapse').bind('click', function (e) {
+            e.preventDefault();
+            var el = jQuery(this).parent().closest(".panel").children(".panel-body");
+            if ($(this).hasClass("collapses")) {
+                $(this).addClass("expand").removeClass("collapses");
+                el.slideUp(200);
+            } else {
+                $(this).addClass("collapses").removeClass("expand");
+                el.slideDown(200);
+            }
+        });
+    };
+    //function to activate the 3rd and 4th level menus
+    var runNavigationMenu = function () {
+        var lastActive = null;
+        $('.main-navigation-menu li.active').addClass('open');
+        $('.main-navigation-menu > li a').bind('click', function () {
+            lastActive = $(this).parent().parent().find("li.active");
+            if ($(this).parent().children('ul').hasClass('sub-menu') && ((!$('body').hasClass('navigation-small') || $windowWidth < 767) || !$(this).parent().parent().hasClass('main-navigation-menu'))) {
+                if (!$(this).parent().hasClass('open')) {
+                    $(this).parent().addClass('open');
+                    $(this).parent().parent().children('li.open').not($(this).parent()).not($('.main-navigation-menu > li.active')).removeClass('open').children('ul').slideUp(200);
+                    $(this).parent().children('ul').slideDown(200, function () {
+                        runContainerHeight();
+                    });
+                } else {
+                    if (!$(this).parent().hasClass('active')) {
+                        $(this).parent().parent().children('li.open').not($('.main-navigation-menu > li.active')).removeClass('open').children('ul').slideUp(200, function () {
+                            runContainerHeight();
+                        });
+                    } else {
+                        $(this).parent().parent().children('li.open').removeClass('open').children('ul').slideUp(200, function () {
+                            runContainerHeight();
+                        });
+                    }
+                }
+            }
+            if(lastActive != null){
+                /*2015-09-25 菜单多次点击不能展开*/
+                if(lastActive.attr("id")!=$(this).parent().attr("id")){
+                    lastActive.removeClass("open");
+                    lastActive.find(".sub-menu").css("display","none");
+                    lastActive.find(".sub-menu li").removeClass("open");
+                }
+                lastActive.removeClass("active");
+            }
+            lastActive = getLastActive($(this)).addClass("active");
+        });
+
+        function getLastActive(eventObject){
+            var parent = eventObject.parent();
+            if(parent == null) return null;
+            if(parent.attr("id") == "menu") return eventObject;
+            return getLastActive(parent);
+        }
+    };
+    //function to activate the Go-Top button
+    var runGoTop = function () {
+        $('.go-top').bind('click', function (e) {
+            $("html, body").animate({
+                scrollTop: 0
+            }, "slow");
+            e.preventDefault();
+        });
+    };
+    //function to avoid closing the dropdown on click
+    var runDropdownEnduring = function () {
+        if ($('.dropdown-menu.dropdown-enduring').length) {
+            $('.dropdown-menu.dropdown-enduring').click(function (event) {
+                event.stopPropagation();
+            });
+        }
+    };
+    //function to return the querystring parameter with a given name.
+    var getParameterByName = function (name) {
+        name = name.replace(/[\[]/, "\\\[").replace(/[\]]/, "\\\]");
+        var regex = new RegExp("[\\?&]" + name + "=([^&#]*)"),
+            results = regex.exec(location.search);
+        return results == null ? "" : decodeURIComponent(results[1].replace(/\+/g, " "));
+    };
+    //Set of functions for Style Selector
+    var runStyleSelector = function () {
+        $('#style-pop dd').bind('click', function () {
+            var style = $(this).attr('class');
+            $('#skin-style').attr("href", ctp + "/css/" + style + ".css");
+            jaf.cookie.write("jaf.skin", style, 365);
+        });
+    };
+    $('.drop-down-wrapper').perfectScrollbar({
+        wheelSpeed: 50,
+        minScrollbarLength: 20,
+        suppressScrollX: true
+    });
+    $('.navbar-tools .dropdown').on('shown.bs.dropdown', function () {
+        $(this).find('.drop-down-wrapper').scrollTop(0).perfectScrollbar('update');
+    });
+
+    //Window Resize Function
+    var runWindowResize = function (func, threshold, execAsap) {
+        //wait until the user is done resizing the window, then execute
+        $(window).clipresize(function () {
+            runElementsPosition();
+        });
+    };
+
+    //load message
+    var runLoadMessage = function(_call){
+        var url = "index!message.jhtml";
+
+        var panelTarget = $("ul#messages");
+        var height = panelTarget.height();
+        panelTarget.css("height", height);
+        panelTarget.text("");
+
+        var menuTarget = $("li#message-pop");
+        var numSpan = menuTarget.find("a.dropdown-toggle > span.badge");
+        var numTitle = menuTarget.find("ul.dropdown-menu > li > span.dropdown-menu-title");
+        var popMenu = menuTarget.find("ul.dropdown-menu > li > div.drop-down-wrapper > ul");
+
+        function print(data){
+            numSpan.text("0");
+            numTitle.text(lang["index.pop.message.title"].replace("{0}", 0));
+            popMenu.text("");
+            if(data == null || data.list == null || data.list.length == 0) return;
+            numSpan.text(data.size);
+            numTitle.text(lang["index.pop.message.title"].replace("{0}",data.size));
+
+            for(var i=0;i<data.list.length;i++){
+                var dataObject = data.list[i];
+                var panelItem = $("<li></li>");
+                var clickEvent = "jaf.dialog.open('" + ctx + "/user/message.jhtml?msg.id=" + dataObject.id + "','40%','" + lang["view.message"] + "');";
+                var panelLinkHtml = "<a class=\"activity\" href=\"javascript:;\" onclick=\"" + clickEvent + "\">" +
+                    "<span class=\"desc\">" + dataObject.title + "</span>" +
+                    "<div class=\"time\"><i class=\"fa fa-time bigger-110\"></i>" + dataObject.time + lang["ago"] + "</div>" +
+                    "</a>";
+                $(panelLinkHtml).appendTo(panelItem);
+                panelItem.appendTo(panelTarget);
+                panelTarget.css("height", "auto");
+
+                var menuItem = $("<li></li>");
+                var menuLinkHtml = "<a href=\"javascript:;\" onclick=\"" + clickEvent + "\">" +
+                    "<div class=\"clearfix\"><div class=\"thread-content\">" +
+                    "<span class=\"preview\">" + dataObject.title + "</span>" +
+                    "<span class=\"time\"> " + dataObject.time + lang["ago"] + "</span>" +
+                    "</div></div>" +
+                    "</a>";
+                $(menuLinkHtml).appendTo(menuItem);
+                menuItem.appendTo(popMenu);
+            }
+        }
+
+        $.post(url, {}, function (data){
+            print(data);
+            if(_call != undefined && _call != null) _call();
+        }, "json");
+    };
+
+    //load bulletin
+    var runLoadBulletin = function(_call){
+        var url = "index!bulletin.jhtml";
+
+        var $panelTarget = $("table#bulletin");
+        var height = $panelTarget.height();
+        $panelTarget.css("height", height);
+
+        var menuTarget = $("li#bulletin-pop");
+        var numSpan = menuTarget.find("a.dropdown-toggle > span.badge");
+        var numTitle = menuTarget.find("ul.dropdown-menu > li > span.dropdown-menu-title");
+        var popMenu = menuTarget.find("ul.dropdown-menu > li > div.drop-down-wrapper > ul");
+
+        function print(data){
+            numSpan.text("0");
+            numTitle.text(lang["index.pop.bulletin.title"].replace("{0}", 0));
+            popMenu.text("");
+            if(data == null || data.list == null || data.list.length == 0) return;
+            numSpan.text(data.size);
+            numTitle.text(lang["index.pop.bulletin.title"].replace("{0}",data.size));
+            $panelTarget.html("");
+            for(var i=0;i<data.list.length;i++){
+                var dataObject = data.list[i];
+                var clickEvent = "jaf.dialog.open('" + ctx + "/sys/bulletin!detail.jhtml?bulletin.id=" + dataObject.id + "','60%','" + lang["view.bulletin"] + "')";
+
+                var menuItem = $("<li></li>");
+                var menuLinkHtml = "<a href=\"javascript:;\" onclick=\"" + clickEvent + "\"><span class=\"preview\"> " + dataObject.title + "</span></a>";
+                $(menuLinkHtml).appendTo(menuItem);
+                menuItem.appendTo(popMenu);
+
+                if(i<7) {
+                    var $tr = "<tr><td width=\"80%\" style=\"text-overflow:ellipsis;white-space:nowrap;overflow:hidden;\"><a href=\"javascript:;\" onclick=\"" + clickEvent + "\">" + dataObject.title + "</a></td>" +
+                        "<td align=\"right\"><em>" + dataObject.time + "</em></td></tr>";
+                    $panelTarget.append($tr);
+                }
+            }
+            for(var i=0;i<(7-data.list.length);i++){
+                $panelTarget.append($("<tr><td colspan=\"2\">&nbsp;</td></tr>"));
+            }
+        }
+
+        $.post(url, {}, function (data){
+            print(data);
+            if(_call != undefined && _call != null) _call();
+            $panelTarget.css("height", "auto");
+        }, "json");
+    };
+
+    //load workflow
+    var runLoadTask = function(_call){
+        var url = "index!workflow.jhtml";
+
+        var menuTarget = $("li#task-pop");
+        var numSpan = menuTarget.find("a.dropdown-toggle > span.badge");
+        var numTitle = menuTarget.find("ul.dropdown-menu > li > span.dropdown-menu-title");
+        var popMenu = menuTarget.find("ul.dropdown-menu > li > div.drop-down-wrapper > ul");
+
+        function print(data){
+            numSpan.text("0");
+            numTitle.text(lang["index.pop.task.title"].replace("{0}", 0));
+            popMenu.text("");
+            if(data == null || data.list == null || data.list.length == 0) return;
+            numSpan.text(data.size);
+            numTitle.text(lang["index.pop.task.title"].replace("{0}",data.size));
+            for(var i=0;i<data.list.length;i++){
+                var dataObject = data.list[i];
+                var clickEvent = "top.ME.open(this, '" + dataObject.title + "', '" + ctx + dataObject.url + "')";
+
+                var menuItemLi = $("<li></li>");
+                var menuItemHtml = "<a class=\"todo-actions\" href=\"javascript:void(0)\" id=\"wf__" + dataObject.id + "\" onclick=\"" + clickEvent + "\">" +
+                    "<span class=\"desc\">[" + dataObject.name + "] " + dataObject.title + "</span>" +
+                    "<span class=\"label label-" + urgent(dataObject.urgent) + "\" style=\"margin-top:-3px;\"> " + dataObject.time + "</span>" +
+                    "</a>";
+                $(menuItemHtml).appendTo(menuItemLi);
+                menuItemLi.appendTo(popMenu);
+            }
+        }
+
+        function print2(data, id) {
+            if(!data || !data.list || !data.list.length) {
+                return;
+            }
+
+            var $panelTarget = $("div#" + id + " table");
+            $panelTarget.css("height", $panelTarget.height()).html("");
+            for(var i=0;i<data.list.length;i++){
+                var dataObject = data.list[i];
+                if(i<7) {
+                    var $tr = $("<tr><td><a class=\"todo-actions\" href=\"javascript:void();\" title=\"" + lang["process.workflow"] + "\" id=\"wf__" + dataObject.id + "\" url=\"" + dataObject.url + "\">" +
+                        "<span class=\"desc\">[" + dataObject.name + "] " + dataObject.title + " <em>" + dataObject.creator + "</em></span></a></td>" +
+                        "<td><span class=\"label label-" + urgent(dataObject.urgent) + "\" style=\"padding: 0.15em !important;\">" + dataObject.time + "</span></td></tr>");
+                    if(!dataObject.url) {
+                        $tr.find('td').html($tr.find('a:first').html());
+                    }
+                    $panelTarget.append($tr);
+                }
+            }
+            $panelTarget.find('tr td a').one('click', function() {
+                if($(this).attr('url')) {
+                    top.ME.open(this, this.title, ctx + $(this).attr('url'));
+                    $(this).parent('td').html($(this).html());
+                }
+            });
+
+            for(var i=0;i<(7-data.list.length);i++){
+                $panelTarget.append($("<tr><td colspan=\"2\">&nbsp;</td></tr>"));
+            }
+            var $taskBadge = $("a[href=#" + id + "] span.badge");
+            data.size ? $taskBadge.show().text(data.size) : $taskBadge.hide().text("0");
+            $panelTarget.css("height", "auto");
+        }
+
+        $.post(url, {}, function (data){
+            print(data);
+            if(_call != undefined && _call != null) _call();
+        }, "json");
+
+        $.post(url, {dfilter: 1}, function (data){
+            print2(data, "task_unfinished");
+        }, "json");
+
+        function urgent(val){
+            if(val == null) return "info";
+            if(val < 5) return "warning";
+            return "danger";
+        }
+    };
+
+    return {
+        //main function to initiate template pages
+        init: function () {
+            runWindowResize();
+            runInit();
+            runStyleSelector();
+            runElementsPosition();
+            runToDoAction();
+            runNavigationToggler();
+            runNavigationMenu();
+            runGoTop();
+            runModuleTools();
+            runDropdownEnduring();
+            runTooltips();
+            runPopovers();
+            runPanelScroll();
+            runShowTab();
+            runAccordionFeatures();
+            //runCustomCheck();
+            runLoadBulletin();
+            //runLoadMessage();
+            //runLoadTask();
+        }
+    };
+}();

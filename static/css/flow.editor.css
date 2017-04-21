@@ -1,0 +1,36 @@
+div.flow-pools{clear:both;margin:5px 0 0 90px;min-height:28px}
+div.flow-pools ul#flow-pools{padding:0;float:left}
+div.flow-pools ul#flow-pools>li{height:20px}
+div.flow-pools ul#flow-pools>li>input[type=radio], div.flow-pools ul#flow-pools>li>input[type=checkbox]{float:left;margin:3px 5px}
+div.flow-pools ul#flow-pools>li span{color:#04d;cursor:pointer}
+div.flow-pools div#flow-msg{float:left;margin:10px 10px 0 10px;display:none;position:relative}
+div.flow-pools div#flow-msg div{display:inline-block;padding:0px 0px 0px 10px;color:#fff;background-color:#C83A2A; border-radius: 2px;  line-height: 24px;}
+div.flow-pools div#flow-msg div:before{content: "\f071";font-family: FontAwesome; font-size: 12px; padding-right:10px;}
+div.flow-pools div#flow-msg:before{display: inline-block;content: "\f0d9";font-family: FontAwesome; font-size: 14px; color:#C83A2A;}
+div.process-msg{background-color:#eef2fa;}
+div.process-msg div.intervention{float:left;font-size:9pt;margin:5px 8px}
+div.process-msg>div{font-size:18px!important;color:#039;padding:10px!important;text-align: center}
+div.flow-guider{margin:5px 0 0 0;clear:both;border:1px solid #c1c9d2;padding:10px 10px 10px 10px;background:#fdfdf2}
+div.flow-guider>h1{display:block;background-color:#fff;font-size:10.5pt;font-weight:700;line-height:15px;margin:0;padding:0;clear:both}
+div.flow-guider>h1 strong{display:block;background:url(../images/icons-2.png) no-repeat 5px -516px;padding-left:25px;padding-right:3px;margin:0 8px 5px 70px;float:left}
+div.flow-guider textarea.def-opinions{width:60%;height:auto;padding:3px;line-height:inherit;display:inherit;float:none;margin:0}
+div.flow-guider div.label{float:left;width:80px;text-align:right;min-height:25px;padding-right:10px;clear:left}
+div.flow-guider div.input{padding-right:10px;margin-left:90px}
+div.flow-guider>div.btns{clear:both;text-align:left!important;padding:5px 0 0 90px}
+div.flow-guider>div.btns button,div.flow-guider>div.btns input[type=button],div.flow-guider>div.btns input[type=reset],div.flow-guider>div.btns input[type=submit]{line-height:inherit;font-size:9pt;padding:3px 10px;margin-right:3px;outline:0;border-radius:2px;background:#fff none;border:1px solid #ccc}
+div.flow-guider>div.btns button:hover,div.flow-guider>div.btns input[type=button]:hover,div.flow-guider>div.btns input[type=reset]:hover,div.flow-guider>div.btns input[type=submit]:hover{background-color:#ebebeb}
+div.flow-guider>div.btns input[type=button].red{background-color:#C83A2A;border-color:#b33426;color:#fff}
+div.flow-guider>div.btns input[type=button].red:hover{background-color:#b33426;border-color:#9e2e21}
+div.flow-guider>div.btns input[disabled], div.flow-guider>div.btns input[disabled]:hover{background-color: #ebebeb !important; border-color: #ccc !important;; color:#ccc !important;}
+div#opersDef{margin:20px 10px 20px 100px;overflow:auto;max-height:300px}
+div#opersDef ul li{float:left;padding-left:25px;padding-right:10px;background:#fff url(../images/arrow2.gif) no-repeat left center;cursor:pointer;margin-bottom:5px}
+div#opersDef ul li div.border{border:1px solid #ccc;padding:5px;line-height:18px;height:40px;vertical-align:middle;background-color:#fefef8}
+div#opersDef ul li.start{background-image:none;padding-left:0}
+div#opersDef ul li.end,div#opersDef ul li.start{cursor:default}
+div#opersDef ul li.curr-node{cursor:default}
+div#opersDef ul li.curr-node div.border{background-color:#DEF;color:#06C;border:1px solid #1288fe}
+div#opersDef ul li.curr-node span.opers{text-overflow:none}
+div#opersDef ul li span.opers{width:90px;white-space:nowrap;text-overflow:ellipsis;overflow:hidden;display:block}
+div.flow-chart{border:3px solid #e5e5e5}
+div.flow-chart h1{font-size:10.5pt;font-weight:400;background-color:#e5e5e5;margin:-2px 0 0 0;padding:5px 5px 5px 5px}
+div#flow-chart-pop-panel{height:400px}

@@ -1,0 +1,162 @@
+.webfx-tree-row {
+	/*
+	line-height:	16px;
+	height:			16px;
+	*/
+	white-space:	nowrap;
+	font:			icon;
+	font-size: 9pt !important;
+	font-family: "宋体" !important;
+}
+
+
+.webfx-tree-row span {
+	/*
+	display:		inline-block;
+	height:			16px;
+	line-height:	16px;
+	*/
+
+	overflow:		hidden;
+	text-overflow:	ellipsis;
+	color:#ccc;
+	text-decoration: line-through;
+}
+
+.webfx-tree-children {
+	background-repeat:	repeat-y;
+	background-image:	url("../images/xtree/I.png") !important;
+	background-position-y:	1px !important;	/* IE only */
+	font:			icon;
+}
+
+.webfx-tree-children-nolines {
+	font:			icon;
+}
+
+
+.webfx-tree-row img {
+	vertical-align:	middle;
+	height:			16px;
+}
+
+.webfx-tree-icon {
+	width:			16px;
+	cursor:			hand;
+	cursor:			pointer;
+}
+
+.webfx-tree-expand-icon {
+	width:		19px;
+}
+
+.webfx-tree-item-label {
+	margin-left:		3px;
+	padding:			1px 2px 1px 2px;
+	text-decoration:	none;
+	color:				WindowText;
+
+}
+
+.webfx-tree-item-label:hover {
+	text-decoration:none;
+	color:#0044dd;
+}
+
+.selected .webfx-tree-item-label:hover,
+.selected .webfx-tree-item-label {
+	background:	ThreeDFace;
+}
+
+.selected .webfx-tree-item-label:focus:hover,
+.selected .webfx-tree-item-label:focus,
+.selected .webfx-tree-item-label:active:hover,
+.selected .webfx-tree-item-label:active {
+	background:	Highlight;
+	color:		HighlightText;
+}
+
+.webfx-tree-item-label {
+	/*-moz-border-radius:	4px;*/
+	/*border:				1px solid transparent;*/
+}
+
+.webfx-tree-hide-root {
+	display:	none;
+}
+table.tree{
+	width:100%;	
+}
+table.tree td{	
+	vertical-align: top;
+}
+table.tree td .title{
+	text-align: center;
+	background:	#dce9f2;
+	padding:3px;
+}
+
+div#leftTree {
+	width: 168px;
+	padding: 0px 0px 0px 0px;
+	margin: 0px;
+	text-align: left;
+	margin-left: 5px;
+	
+}
+div#leftTree.h{
+	overflow: hidden;
+}
+div#leftTree.s{
+	width: auto;
+	min-width:168px;
+	position:absolute !important;
+	z-index:200;
+}
+div#leftTree div#tree{
+	margin: 2px 5px;
+	overflow: hidden;
+	padding-bottom:5px;
+	min-width:156px;
+}
+div#leftTree.h div#tree{
+	padding-top:2px;
+	border: 1px solid #fff;
+}
+div#leftTree.s div#tree{
+	border: 1px solid #999;
+	background-color: #fff;
+	filter:alpha(Opacity=70);
+	-moz-opacity:0.7;					/* Moz + FF */
+	opacity: 0.7;						/* 支持CSS3的浏览器（FF 1.5也支持）*/
+	position:absolute;
+	padding-right:10px;
+}
+
+span.switch{
+	color:red;
+	font-weight: bold;
+}
+
+ul#__hqsoft_xtree_plug_menu{
+	border: 1px solid #38599c;
+	position: absolute;
+	background-color: #fff;
+	margin: 1px 0px;
+	list-style: none;
+	padding: 0px;
+}
+ul#__hqsoft_xtree_plug_menu li{
+	
+}
+ul#__hqsoft_xtree_plug_menu a{
+	color: #003399;
+	font-size: 9pt;
+	text-decoration: none;
+	padding: 3px 8px;
+	display: block;
+}
+ul#__hqsoft_xtree_plug_menu a:hover{
+	background-color: #003399;
+	color: #fff;
+}

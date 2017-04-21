@@ -1,0 +1,2 @@
+label.control-label{margin-right:5px;}
+label.control-label > input[type=checkbox]{float: left; margin:3px 3px 0px 0px;}

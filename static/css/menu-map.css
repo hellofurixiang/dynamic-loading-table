@@ -1,0 +1,29 @@
+div.menus-panel{margin:0px 0px 0px 0px;}
+	div.menus-panel dt{height:22px; font-size: 10.5pt; font-weight: bold; border-bottom: 1px solid #dddddd; padding-top:25px; clear: both;}
+	div.menus-panel dl.letter dt{height:10px;margin-bottom:10px; }
+		div.menus-panel dl.letter dt b{margin-right: 5px;}
+		div.menus-panel dt b{font-size: 12pt; font-weight: normal; background-color: #0072bc; color: #fff; display: inline-block;width:20px;height:20px;text-align: center; margin-right: 5px;}
+		div.menus-panel dt.selected b{background-color: #d94a38; }
+	div.menus-panel dd{font-size: 9pt;  margin: 10px 20px 10px 3px; height: 45px; overflow: hidden; float: left; width: 270px;}
+		div.menus-panel dd em{display: block; width: 32px; height:32px;overflow:hidden; float: left; margin-right: 15px;}
+		div.menus-panel dd div{margin-left: 35px; font-weight: bold; margin-bottom:3px;}
+		div.menus-panel dd b{display: block; margin-left: 35px; font-weight: normal;}
+		
+div.pop-notice{
+	background: url(../images/publish-position-btm-red.gif) no-repeat 270px bottom;
+	margin:0px 30px -35px 0px;
+	*margin:0px -20px -35px 0px;
+	position: relative;
+	float: right;
+}
+div.pop-notice div{
+	padding: 5px 8px;
+	background-color: #d94a38;
+	margin-bottom: 7px;
+	color: #fff;
+	font-size: 9pt;
+}
+div.btns {text-align: center;}
+div.type-cate{background-color: #f3f5fe; float: left; margin-left:30px;}
+	div.type-cate a{display: inline-block; padding: 5px 8px;color: #ccc;}
+	div.type-cate a.selected{background-color: #a1acd5; color: #fff; font-weight: bold;}

@@ -1,0 +1,77 @@
+ul{list-style: none;padding: 0px; margin: 0px;}
+body {
+    color: #7F7F7F;
+    background: rgba(255, 255, 255, 0) url("../images/bg.png") !important;
+}
+body .main-login {
+    margin:15% auto;
+    max-width: 500px;
+}
+body .main-register {
+    max-width: 600px;
+    margin:5% auto;
+}
+body .main-password{
+    max-width: 700px;
+    margin:15% auto;
+}
+body .logo {
+    padding: 20px;
+    text-align: center;
+}
+body .box-login, body .box-forgot, body .box-register {
+    background: #FFFFFF;
+    border-radius: 5px;
+    box-shadow: -30px 30px 50px rgba(0, 0, 0, 0.32);
+    overflow: hidden;
+    padding: 15px;
+}
+body a.forgot {
+    color: #909090;
+    font-size: 12px;
+    position: absolute;
+    right: 10px;
+    text-shadow: 1px 1px 1px #FFFFFF;
+    top: 9px;
+}
+body input.password {
+    padding-right: 130px;
+}
+body label {
+    color: #7F7F7F;
+    font-size: 14px;
+    margin-top: 5px;
+}
+
+body .copyright {
+    font-size: 11px;
+    margin: 0 auto;
+    padding: 10px 10px 0;
+    text-align: center;
+}
+body .form-actions:before, body .form-actions:after {
+    content: "";
+    display: table;
+    line-height: 0;
+}
+body .form-actions:after {
+    clear: both;
+}
+body .form-actions {
+    margin-top: 15px;
+    padding-top: 10px;
+    display: block;
+}
+body .new-account {
+    border-top: 1px dotted #EEEEEE;
+    margin-top: 15px;
+    padding-top: 10px;
+    display: block;
+}
+i.fa-clip-image{
+    left:auto;
+    right:4px;
+    margin-top:6px;
+}
+ul.errorMessage{list-style: none;padding:0px;margin:0px;}
+span.help-block{color:#ccc;}
